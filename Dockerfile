@@ -13,10 +13,6 @@ COPY . .
 ARG CDN_URL
 RUN yarn build
 
-RUN rm -rf node_modules
-
-RUN yarn install --production=true --frozen-lockfile --network-timeout 1000000 && \
-  yarn cache clean
 
 ENV NODE_ENV production
 
