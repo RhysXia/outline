@@ -1,8 +1,22 @@
 ARG APP_PATH=/opt/outline
-FROM outlinewiki/outline-base as base
+FROM node:18-alpine AS deps
 
 ARG APP_PATH
 WORKDIR $APP_PATH
+COPY ./package.json ./yarn.lock ./
+COPY ./patches ./patches
+
+RUN yarn install --no-optional --frozen-lockfile --network-timeout 1000000 && \
+  yarn cache clean
+
+COPY . .
+ARG CDN_URL
+RUN yarn build
+
+RUN rm -rf node_modules
+
+RUN yarn install --production=true --frozen-lockfile --network-timeout 1000000 && \
+  yarn cache clean
 
 # ---
 FROM node:18-alpine AS runner
