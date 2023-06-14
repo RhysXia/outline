@@ -107,8 +107,8 @@ class WebsocketProvider extends React.Component<Props> {
     this.socket.io.on("reconnect_attempt", () => {
       if (this.socket) {
         this.socket.io.opts.transports = auth?.team?.domain
-          ? ["websocket"]
-          : ["websocket", "polling"];
+          ? ["polling"]
+          : ["polling"];
       }
     });
 
