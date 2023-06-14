@@ -2,21 +2,17 @@ ARG APP_PATH=/opt/outline
 FROM node:18-alpine
 
 ARG APP_PATH
-WORKDIR $APP_PATH
-COPY ./package.json ./yarn.lock ./
-COPY ./patches ./patches
+ARG CDN_URL
 
-RUN yarn install --no-optional --frozen-lockfile --network-timeout 1000000 && \
-  yarn cache clean
+WORKDIR $APP_PATH
 
 COPY . .
-ARG CDN_URL
-RUN yarn build
-
 
 ENV NODE_ENV production
 
-RUN addgroup -g 1001 -S nodejs && \
+RUN yarn install --no-optional --frozen-lockfile --network-timeout 1000000 && \
+  yarn build && \
+  addgroup -g 1001 -S nodejs && \
   adduser -S nodejs -u 1001 && \
   chown -R nodejs:nodejs $APP_PATH/build
 
