@@ -38,6 +38,6 @@ jobs:
         docker buildx build \
         --output "type=image,push=true" \
         --file ./Dockerfile . \
-        --tag rhysxia/accountbook:"${fullCommit: 0: 7}" \
-        --tag rhysxia/accountbook:latest
+        --tag rhysxia/outline:"${fullCommit: 0: 7}" \
+        --tag rhysxia/outline:latest
       
